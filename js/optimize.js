@@ -3,7 +3,7 @@ const lodash = require('lodash');
 const constants = require('./constants');
 
 // Generate all the possible slices that satisfies the conditions
-function* sliceGenerator(L, H) {
+function* smallSliceGenerator(L, H) {
   for (let i = 0; i < H; i += 1) {
     for (let j = 0; (i + 1) * (j + 1) <= H; j += 1) {
       if (((i + 1) * (j + 1)) >= L * 2) {
@@ -13,7 +13,7 @@ function* sliceGenerator(L, H) {
   }
 }
 
-function* sliceGenerator2(L, H) {
+function* bigSliceGenerator(L, H) {
   for (let i = H - 1; i >= 0; i -= 1) {
     for (let j = Math.floor((H / (i + 1)) - 1); j >= 0; j -= 1) {
       if (((i + 1) * (j + 1)) >= L * 2) {
@@ -52,11 +52,12 @@ function takeSlice(pizza, parameters, slice) {
   return pizza;
 }
 
-function optimize(pizza, parameters) {
+function optimize(_pizza, parameters, generator) {
+  let pizza = lodash.cloneDeep(_pizza);
   const validSlices = [];
   for (let i = 0; i < parameters.R; i += 1) {
     for (let j = 0; j < parameters.C; j += 1) {
-      const slices = sliceGenerator(parameters.L, parameters.H);
+      const slices = generator(parameters.L, parameters.H);
       let slice = slices.next().value;
       while (slice) {
         // Move the slice in position
@@ -78,4 +79,6 @@ function optimize(pizza, parameters) {
 
 module.exports = {
   optimize,
+  smallSliceGenerator,
+  bigSliceGenerator,
 };

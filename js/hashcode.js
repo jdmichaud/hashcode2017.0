@@ -47,10 +47,11 @@ function loadFile(filepath) {
 }
 
 function saveResult(slices) {
-  let output = `${slices.length}\n`;
+  let output = `${slices.length}`;
   // Build output
   slices.forEach((slice) => {
-    output += `${slice[0][0]} ${slice[0][1]} ${slice[1][1]} ${slice[1][1]}\n`;
+    output += '\n';
+    output += `${slice[0][0]} ${slice[0][1]} ${slice[1][1]} ${slice[1][1]}`;
   });
   return output;
 }
