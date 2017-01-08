@@ -1,3 +1,5 @@
+/* eslint no-mixed-operators: 0 */
+
 const fs = require('fs');
 const iconv = require('iconv-lite');
 const lodash = require('lodash');
@@ -17,23 +19,54 @@ function fixEncoding(buffer) {
 function decodeParameters(line) {
   const values = line.split(/\W+/);
   return {
-    X: parseInt(values[0], 10),
+    R: parseInt(values[0], 10),
+    C: parseInt(values[1], 10),
+    L: parseInt(values[2], 10),
+    H: parseInt(values[3], 10),
   };
 }
 
 function loadFile(filepath) {
   const lines = fixEncoding(fs.readFileSync(filepath)).split('\n');
   const parameters = decodeParameters(lines[0]);
+  // Create the pizza
+  const pizza = Array(parameters.R);
+  for (let i = 0; i < parameters.R; i += 1) {
+    pizza[i] = new Array(parameters.C).fill('.');
+  }
   // Load rest of file
+  for (let i = 0; i < parameters.R; i += 1) {
+    for (let j = 0; j < parameters.C; j += 1) {
+      pizza[i][j] = lines[i + 1][j];
+    }
+  }
+  return {
+    parameters: parameters,
+    pizza: pizza,
+  };
 }
 
-function saveResult(results, parameters, filename) {
-  let output = '';
+function saveResult(slices) {
+  let output = `${slices.length}\n`;
   // Build output
-  fs.writeFileSync(output);
+  slices.forEach((slice) => {
+    output += `${slice[0][0]} ${slice[0][1]} ${slice[1][1]} ${slice[1][1]}\n`;
+  });
+  return output;
+}
+
+function getSliceSice(slice) {
+  return (slice[1][0] - slice[0][0] + 1) * (slice[1][1] - slice[0][1] + 1);
+}
+
+function score(slices) {
+  return slices.reduce((accumulator, slice) =>
+    accumulator + getSliceSice(slice),
+  0);
 }
 
 module.exports = {
   loadFile,
   saveResult,
+  score,
 };
