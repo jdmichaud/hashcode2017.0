@@ -14,6 +14,8 @@ if (smallSlicesScore > bigSlicesScore) {
   bestSlices = smallSlices;
 }
 // console.log(slices);
+const results = hashcode.streamResult(bestSlices);
+hashcode.saveFile(results, `${process.argv[2].slice(0, -2)}out`);
 console.log('--------- BEGIN -----------');
-console.log(hashcode.saveResult(bestSlices));
+console.log(results);
 console.log('---------- END ------------');

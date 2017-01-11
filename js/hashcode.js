@@ -46,7 +46,7 @@ function loadFile(filepath) {
   };
 }
 
-function saveResult(slices) {
+function streamResult(slices) {
   let output = `${slices.length}`;
   // Build output
   slices.forEach((slice) => {
@@ -66,8 +66,13 @@ function score(slices) {
   0);
 }
 
+function saveFile(results, filepath) {
+  fs.writeFileSync(filepath, results);
+}
+
 module.exports = {
   loadFile,
-  saveResult,
+  streamResult,
+  saveFile,
   score,
 };
