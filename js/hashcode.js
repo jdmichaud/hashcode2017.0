@@ -51,7 +51,7 @@ function saveResult(slices) {
   // Build output
   slices.forEach((slice) => {
     output += '\n';
-    output += `${slice[0][0]} ${slice[0][1]} ${slice[1][1]} ${slice[1][1]}`;
+    output += `${slice[0][0]} ${slice[0][1]} ${slice[1][0]} ${slice[1][1]}`;
   });
   return output;
 }
